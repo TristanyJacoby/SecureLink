@@ -1,3 +1,73 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Colour tokens (RGB triplets so Tailwind opacity modifiers work). */
+:root {
+  --paper: 238 243 240;      /* #EEF3F0 cool, slightly green grey */
+  --surface: 255 255 255;
+  --ink: 16 35 28;           /* #10231C deep pine */
+  --muted: 84 104 96;        /* #546860 */
+  --line: 214 224 219;       /* #D6E0DB */
+  --seal: 15 122 87;         /* #0F7A57 */
+  --seal-ink: 255 255 255;
+  --mint: 221 243 232;       /* #DDF3E8 */
+  --alert: 180 35 24;        /* #B42318 */
+  --alert-tint: 253 236 234;
+  --caution: 138 82 0;       /* #8A5200 */
+  --caution-tint: 253 243 223;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: 10 18 15;
+    --surface: 18 30 25;
+    --ink: 228 239 233;
+    --muted: 147 166 157;
+    --line: 39 58 50;
+    --seal: 52 195 143;
+    --seal-ink: 6 26 18;
+    --mint: 22 52 41;
+    --alert: 255 128 116;
+    --alert-tint: 58 22 20;
+    --caution: 242 186 92;
+    --caution-tint: 54 39 12;
+    color-scheme: dark;
+  }
+}
+
+html, body { background: rgb(var(--paper)); color: rgb(var(--ink)); }
+body { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+
+@layer components {
+  .btn {
+    @apply inline-flex w-full min-h-[3.25rem] items-center justify-center gap-2 rounded-2xl px-5 text-[1.0625rem] font-semibold transition-colors;
+    @apply focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-2 focus-visible:outline-seal;
+    @apply disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary { @apply btn bg-seal text-seal-ink hover:brightness-110 active:brightness-95; }
+  .btn-quiet { @apply btn bg-mint text-ink hover:brightness-[0.97]; }
+  .btn-danger { @apply btn border-2 border-alert/60 text-alert hover:bg-alert-tint; }
+  .icon-btn {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-full text-muted hover:bg-mint hover:text-ink;
+    @apply focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-seal;
+  }
+  .field {
+    @apply w-full rounded-2xl border-2 border-line bg-surface px-4 py-3 text-base text-ink placeholder:text-muted/70;
+    @apply focus:border-seal focus:outline-none;
+  }
+}
+
+/* The one orchestrated moment: the number "seals" when both people confirm. */
+@keyframes seal-in {
+  0% { transform: scale(0.96); opacity: 0.6; }
+  60% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.seal-in { animation: seal-in 420ms cubic-bezier(.2,.8,.2,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .seal-in, .animate-spin { animation: none !important; }
+  * { transition: none !important; }
+}
